@@ -1,0 +1,64 @@
+
+package segmentation;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+/**
+ *
+ * @author islem
+ */
+public class Segmentation {
+
+    static String data = "";
+
+    public static void main(String[] args) {
+
+        try {
+
+            // Read the first file :
+            File myObj = new File("./file1.txt");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                data = myReader.nextLine();
+                System.out.println("Mot d'entrer" + " :" + data);
+                System.out.println("la longeur de mot " + data + "  : " + data.length());
+                
+                // Read the second file :
+                Scanner scan = new Scanner(new File("./file2.txt"));
+                int lineNumber = 0;
+                while (scan.hasNext()) {
+                    lineNumber++;
+                    String line = scan.nextLine().toLowerCase().toString();
+                    
+                    // Looking for the text in the first file in the second file :
+                    if (line.contains(data)) {
+                        String[] lesMots = line.split("\\p{javaWhitespace}+");
+                        boolean found = false;
+
+                        for (int i = 0; i < lesMots.length; i++) {
+                            if (lesMots[i].equals(data)) {
+                                found = true;
+                                System.out.println("Description de mot : " + line);
+                                System.out.println("Le mot " + data + " apparaît à la ligne " + lineNumber + " du paragraphe: ");
+                                System.out.printf("Le mot %s apparaît à la position %d.%n", data, i + 1);
+                            }
+                        }
+                        if (!found) {
+                            System.out.printf("Le mot %s n'apparaît pas dans le texte.%n", data + " du ligne");
+                        }
+
+                    }
+                }
+                
+            }
+            myReader.close();
+            ;
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+    }
+}
